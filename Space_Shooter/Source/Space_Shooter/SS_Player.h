@@ -37,6 +37,79 @@ public:
 	UPROPERTY(EditAnywhere)
 	UAudioComponent* DeathExplosionSound;
 
+	UPROPERTY(EditAnywhere)
+	float Field_Width;
+
+	UPROPERTY(EditAnywhere)
+	float Field_Height;
+
+	UPROPERTY(VisibleAnywhere)
+	float MaxHealth;
+
+	UPROPERTY(VisibleAnywhere)
+	float CurrentHealth;
+
+	UPROPERTY(VisibleAnywhere)
+	float MaxArmor;
+
+	UPROPERTY(VisibleAnywhere)
+	float CurrentArmor;
+
+public:
+	void MoveRight(float AxisValue);
+
+	void MoveUp(float AxisValue);
+
+	void StartFiring();
+
+	void StopFiring();
+
+	void FireWeapon();
+
+	UPROPERTY(EditAnywhere)
+	float MaxVelocity;
+
+	UPROPERTY(VisibleAnywhere)
+	bool bIsFiring;
+
+	UPROPERTY(VisibleAnywhere)
+	float WeaponFireRate;
+
+	UPROPERTY(VisibleAnywhere)
+	float TimeSinceLastShot;
+
+	UPROPERTY(VisibleAnywhere)
+	bool bHit;
+
+	UPROPERTY(VisibleAnywhere)
+	bool bDead;
+
+	UPROPERTY(VisibleAnywhere)
+	float Current_X_Velocity;
+
+	UPROPERTY(VisibleAnywhere)
+	float Current_Y_Velocity;
+
+	UPROPERTY(VisibleAnywhere)
+	float PlayerScore;
+
+	UPROPERTY(VisibleAnywhere)
+	FVector CurrentLocation;
+
+	UPROPERTY(VisibleAnywhere)
+	FRotator CurrentRotation;
+
+	UPROPERTY(VisibleAnywhere)
+	FVector NewLocation;
+
+	UFUNCTION()
+	void OnBeginOverlap(AActor* PlayerActor, AActor* OtherActor);
+
+	//UPROPERTY(EditAnywhere)
+	//	TSubclassOf<AProjectile> WeaponProjectile_BP;
+
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
