@@ -70,6 +70,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	float MaxVelocity;
 
+	UPROPERTY(EditAnywhere)
+	float RotatingSpeed;
+
 	UPROPERTY(VisibleAnywhere)
 	bool bIsFiring;
 
@@ -77,7 +80,7 @@ public:
 	float WeaponFireRate;
 
 	UPROPERTY(VisibleAnywhere)
-	float TimeSinceLastShot;
+	float FiringCoolTime;
 
 	UPROPERTY(VisibleAnywhere)
 	bool bHit;
@@ -109,7 +112,7 @@ public:
 	UFUNCTION()
 	void OnBeginOverlap(AActor* PlayerActor, AActor* OtherActor);
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleAnywhere)
 	TSubclassOf<AProjectile> WeaponProjectile_BP;
 
 

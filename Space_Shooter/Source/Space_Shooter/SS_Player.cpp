@@ -31,8 +31,10 @@ ASS_Player::ASS_Player()
 
 	bIsFiring = false;
 	WeaponFireRate = 0.25f;
-	TimeSinceLastShot = 0.0f;
+	FiringCoolTime = 0.0f;
 	PlayerScore = 0.0f;
+
+	WeaponProjectile_BP = AProjectile::StaticClass();
 }
 
 void ASS_Player::MoveRight(float AxisValue)
@@ -112,23 +114,24 @@ void ASS_Player::Tick(float DeltaTime)
 
 void ASS_Player::ProcessRotation(float DeltaTime)
 {
+	float Delta = DeltaTime * RotatingSpeed;
 	if (Current_Y_Velocity > 0.1f)
 	{
-		CurrentRotation.Pitch -= DeltaTime * 100.0f;
+		CurrentRotation.Pitch -= Delta;
 		CurrentRotation.Pitch = FMath::Clamp(CurrentRotation.Pitch, InitialRotation.Pitch - 45.0f, InitialRotation.Pitch + 45.0f);
 	}
 
 	else if (Current_Y_Velocity < -0.1f)
 	{
-		CurrentRotation.Pitch += DeltaTime * 100.0f;
+		CurrentRotation.Pitch += Delta;
 		CurrentRotation.Pitch = FMath::Clamp(CurrentRotation.Pitch, InitialRotation.Pitch - 45.0f, InitialRotation.Pitch + 45.0f);
 	}
 
 	else
 	{
 		float PitchDiff = InitialRotation.Pitch - CurrentRotation.Pitch;
-		CurrentRotation.Pitch += FMath::Sign(PitchDiff) * DeltaTime * 100.0f;
-		if (FMath::Abs(PitchDiff) < DeltaTime * 100.0f)
+		CurrentRotation.Pitch += FMath::Sign(PitchDiff) * Delta;
+		if (FMath::Abs(PitchDiff) < Delta)
 		{
 			CurrentRotation = InitialRotation;
 		}
@@ -156,14 +159,15 @@ void ASS_Player::ProcessTranslation(float DeltaTime)
 
 void ASS_Player::ProcessFiring(float DeltaTime)
 {
-	if (!bIsFiring)
-		return;
-
-	TimeSinceLastShot += DeltaTime;
-	if (TimeSinceLastShot >= WeaponFireRate)
+	if (FiringCoolTime > 0.0f)
 	{
-		TimeSinceLastShot = 0.0f;
+		FiringCoolTime = FMath::Max(FiringCoolTime - DeltaTime, 0.0f);
+	}
+
+	if (bIsFiring && FiringCoolTime <= 0.0f)
+	{
 		FireWeapon();
+		FiringCoolTime = WeaponFireRate;
 	}
 }
 
