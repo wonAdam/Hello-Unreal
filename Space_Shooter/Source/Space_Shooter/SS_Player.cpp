@@ -38,6 +38,15 @@ ASS_Player::ASS_Player()
 void ASS_Player::MoveRight(float AxisValue)
 {
 	Current_X_Velocity = MaxVelocity * AxisValue;
+
+	if (AxisValue < 0.0f)
+	{
+		ParticleSystem->Deactivate();
+	}
+	else
+	{
+		ParticleSystem->Activate();
+	}
 }
 
 void ASS_Player::MoveUp(float AxisValue)
@@ -67,7 +76,7 @@ void ASS_Player::BeginPlay()
 	Super::BeginPlay();
 	
 	CurrentLocation = GetActorLocation();
-	CurrentRotation = GetActorRotation();
+	InitialRotation = CurrentRotation = GetActorRotation();
 
 	bHit = false;
 	bDead = false;
@@ -88,12 +97,46 @@ void ASS_Player::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	ProcessTranslation(DeltaTime);
+
+	ProcessRotation(DeltaTime);
+}
+
+void ASS_Player::ProcessRotation(float DeltaTime)
+{
+	if (Current_Y_Velocity > 0.1f)
+	{
+		CurrentRotation.Pitch -= DeltaTime * 100.0f;
+		CurrentRotation.Pitch = FMath::Clamp(CurrentRotation.Pitch, InitialRotation.Pitch - 45.0f, InitialRotation.Pitch + 45.0f);
+	}
+
+	else if (Current_Y_Velocity < -0.1f)
+	{
+		CurrentRotation.Pitch += DeltaTime * 100.0f;
+		CurrentRotation.Pitch = FMath::Clamp(CurrentRotation.Pitch, InitialRotation.Pitch - 45.0f, InitialRotation.Pitch + 45.0f);
+	}
+
+	else
+	{
+		float PitchDiff = InitialRotation.Pitch - CurrentRotation.Pitch;
+		CurrentRotation.Pitch += FMath::Sign(PitchDiff) * DeltaTime * 100.0f;
+		if (FMath::Abs(PitchDiff) < DeltaTime * 100.0f)
+		{
+			CurrentRotation = InitialRotation;
+		}
+	}
+
+	SetActorRotation(CurrentRotation);
+}
+
+void ASS_Player::ProcessTranslation(float DeltaTime)
+{
 	if (Current_X_Velocity != 0.0f || Current_Y_Velocity != 0.0f)
 	{
 		NewLocation = FVector(
-			CurrentLocation.X + (Current_X_Velocity * DeltaTime),
-			CurrentLocation.Y + (Current_Y_Velocity * DeltaTime),
-			0.f
+			FMath::Clamp(CurrentLocation.X + (Current_X_Velocity * DeltaTime), -Field_Width / 2.0f, Field_Width / 2.0f),
+			FMath::Clamp(CurrentLocation.Y + (Current_Y_Velocity * DeltaTime), -Field_Height / 2.0f, Field_Height / 2.0f),
+			0.0f
 		);
 
 		SetActorLocation(NewLocation);
