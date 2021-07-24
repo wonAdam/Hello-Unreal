@@ -56,14 +56,20 @@ void ASS_Player::MoveUp(float AxisValue)
 
 void ASS_Player::StartFiring()
 {
+	bIsFiring = true;
 }
 
 void ASS_Player::StopFiring()
 {
+	bIsFiring = false;
 }
 
 void ASS_Player::FireWeapon()
 {
+	FActorSpawnParameters Params = {};
+	Params.Owner = this;
+	
+	GetWorld()->SpawnActor(WeaponProjectile_BP, &CurrentLocation, &CurrentRotation, Params);
 }
 
 void ASS_Player::OnBeginOverlap(AActor* PlayerActor, AActor* OtherActor)
@@ -100,6 +106,8 @@ void ASS_Player::Tick(float DeltaTime)
 	ProcessTranslation(DeltaTime);
 
 	ProcessRotation(DeltaTime);
+
+	ProcessFiring(DeltaTime);
 }
 
 void ASS_Player::ProcessRotation(float DeltaTime)
@@ -142,6 +150,20 @@ void ASS_Player::ProcessTranslation(float DeltaTime)
 		SetActorLocation(NewLocation);
 
 		CurrentLocation = NewLocation;
+	}
+}
+
+
+void ASS_Player::ProcessFiring(float DeltaTime)
+{
+	if (!bIsFiring)
+		return;
+
+	TimeSinceLastShot += DeltaTime;
+	if (TimeSinceLastShot >= WeaponFireRate)
+	{
+		TimeSinceLastShot = 0.0f;
+		FireWeapon();
 	}
 }
 

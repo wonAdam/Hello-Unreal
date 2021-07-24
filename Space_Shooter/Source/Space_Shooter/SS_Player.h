@@ -8,6 +8,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/AudioComponent.h"
 #include "Components/StaticMeshComponent.h"
+#include "Projectile.h"
 #include "SS_Player.generated.h"	
 
 UCLASS()
@@ -22,19 +23,19 @@ public:
 public:
 	USceneComponent* DefaultSceneRoot;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleAnywhere)
 	UParticleSystemComponent* ParticleSystem;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleAnywhere)
 	UParticleSystemComponent* ExplosionFX;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* ShipMesh;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleAnywhere)
 	UCapsuleComponent* CollisionComponent;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(VisibleAnywhere)
 	UAudioComponent* DeathExplosionSound;
 
 	UPROPERTY(EditAnywhere)
@@ -108,8 +109,8 @@ public:
 	UFUNCTION()
 	void OnBeginOverlap(AActor* PlayerActor, AActor* OtherActor);
 
-	//UPROPERTY(EditAnywhere)
-	//	TSubclassOf<AProjectile> WeaponProjectile_BP;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AProjectile> WeaponProjectile_BP;
 
 
 
@@ -124,6 +125,8 @@ public:
 	void ProcessRotation(float DeltaTime);
 
 	void ProcessTranslation(float DeltaTime);
+	
+	void ProcessFiring(float DeltaTime);
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
