@@ -4,7 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include "SS_Player.generated.h"
+#include "Particles/ParticleSystemComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "Components/AudioComponent.h"
+#include "Components/StaticMeshComponent.h"
+#include "SS_Player.generated.h"	
 
 UCLASS()
 class SPACE_SHOOTER_API ASS_Player : public APawn
@@ -14,6 +18,24 @@ class SPACE_SHOOTER_API ASS_Player : public APawn
 public:
 	// Sets default values for this pawn's properties
 	ASS_Player();
+
+public:
+	USceneComponent* DefaultSceneRoot;
+
+	UPROPERTY(EditAnywhere)
+	UParticleSystemComponent* ParticleSystem;
+
+	UPROPERTY(EditAnywhere)
+	UParticleSystemComponent* ExplosionFX;
+
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* ShipMesh;
+
+	UPROPERTY(EditAnywhere)
+	UCapsuleComponent* CollisionComponent;
+
+	UPROPERTY(EditAnywhere)
+	UAudioComponent* DeathExplosionSound;
 
 protected:
 	// Called when the game starts or when spawned
