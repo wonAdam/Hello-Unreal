@@ -30,11 +30,11 @@ public:
 
 public:
 	UPROPERTY(EditAnywhere)
-		AStaticMeshActor* Door;
+	AStaticMeshActor* Door;
 
 	UPROPERTY(VisibleAnywhere)
-		UOpenDoor* OpenDoor;
+	UOpenDoor* OpenDoor;
 
 	UPROPERTY(VisibleAnywhere)
-		AActor* PlayerPawn;
+	AActor* PlayerPawn;
 };

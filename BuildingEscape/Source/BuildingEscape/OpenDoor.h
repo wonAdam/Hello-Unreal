@@ -35,46 +35,46 @@ public:
 
 public:
 	UFUNCTION()
-		void OpenDoor();
+	void OpenDoor();
 
 	UFUNCTION()
-		void CloseDoor();
+	void CloseDoor();
 
 private:
 	UFUNCTION()
-		bool OpeningDoor(float DeltaTime);
+	bool OpeningDoor(float DeltaTime);
 
 	UFUNCTION()
-		bool ClosingDoor(float DeltaTime);
+	bool ClosingDoor(float DeltaTime);
 
 	UFUNCTION()
-		void CountOpenedDuration(float DeltaTime);
+	void CountOpenedDuration(float DeltaTime);
 
 public:
 	UPROPERTY(VisibleAnywhere)
-		float OpenAngleZ;
+	float OpenAngleZ;
 
 	UPROPERTY(VisibleAnywhere)
-		float CloseAngleZ;
+	float CloseAngleZ;
 
 	UPROPERTY(EditAnywhere)
-		float OpeningAngleDelta = 90.0f;
+	float OpeningAngleDelta = 90.0f;
 
 	UPROPERTY(EditAnywhere)
-		float OpeningInterval = 5.0f;
+	float OpeningInterval = 5.0f;
 
 	UPROPERTY(EditAnywhere)
-		float ClosingInterval = 5.0f;
+	float ClosingInterval = 5.0f;
 
 	UPROPERTY(VisibleAnywhere)
-		float CurrentTime = 0.0f;
+	float CurrentTime = 0.0f;
 
 	UPROPERTY(VisibleAnywhere)
-		DoorState State = DoorState::Closed;
+	DoorState State = DoorState::Closed;
 
 	UPROPERTY(VisibleAnywhere)
-		float OpenDuration = 2.0f;
+	float OpenDuration = 2.0f;
 
 	UPROPERTY(VisibleAnywhere)
-		float CountAfterOpened = 0.0f;
+	float CountAfterOpened = 0.0f;
 };
