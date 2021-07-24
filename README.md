@@ -8,4 +8,6 @@
 
 https://www.udemy.com/course/unrealcourse/
 
+https://learn.awesometuts.com/
+
 유데미 강의를 들으며 기초를 다지고자 합니다.
