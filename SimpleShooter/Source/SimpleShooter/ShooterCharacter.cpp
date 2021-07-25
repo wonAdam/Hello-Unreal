@@ -35,15 +35,23 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &ThisClass::MoveRight);
 	PlayerInputComponent->BindAxis(TEXT("LookRight"), this, &ThisClass::LookRight);
 	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &ThisClass::Jump);
+	PlayerInputComponent->BindAction(TEXT("Run"), EInputEvent::IE_Pressed, this, &ThisClass::OnShiftKeyPressed);
+	PlayerInputComponent->BindAction(TEXT("Run"), EInputEvent::IE_Released, this, &ThisClass::OnShiftKeyReleased);
 }
 
 void AShooterCharacter::MoveForward(float AxisValue)
 {
+	if(!bIsRunning)
+		AxisValue /= 3;
+
 	AddMovementInput(GetActorForwardVector() * AxisValue);
 }
 
 void AShooterCharacter::MoveRight(float AxisValue)
 {
+	if (!bIsRunning)
+		AxisValue /= 3;
+
 	AddMovementInput(GetActorRightVector() * AxisValue);
 }
 
@@ -56,4 +64,15 @@ void AShooterCharacter::LookRight(float AxisValue)
 {
 	AddControllerYawInput(AxisValue * RotationRate * GetWorld()->GetDeltaSeconds());
 }
+
+void AShooterCharacter::OnShiftKeyPressed()
+{
+	bIsRunning = true;
+}
+
+void AShooterCharacter::OnShiftKeyReleased()
+{
+	bIsRunning = false;
+}
+
 

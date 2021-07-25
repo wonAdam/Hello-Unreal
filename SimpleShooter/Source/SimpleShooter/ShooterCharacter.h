@@ -29,10 +29,13 @@ public:
 private:
 	UPROPERTY(EditAnywhere)
 	float RotationRate = 80.0f;
+	bool bIsRunning = false;
 
 private:
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
 	void LookUp(float AxisValue);
 	void LookRight(float AxisValue);
+	void OnShiftKeyPressed();
+	void OnShiftKeyReleased();
 };
