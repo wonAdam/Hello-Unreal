@@ -2,6 +2,7 @@
 
 
 #include "Hazard.h"
+#include "SS_Player.h"
 
 // Sets default values
 AHazard::AHazard()
@@ -26,7 +27,7 @@ AHazard::AHazard()
 
 	SelfDestructTimer = 1.0f;
 
-	bHit = false;
+	bHit = bDestroy = false;
 }
 
 void AHazard::SpawnChildren(int32 NumChildren)
@@ -41,7 +42,22 @@ void AHazard::SetHazardVelocity(FVector NewVelocity)
 
 void AHazard::OnBeginOverlap(AActor* AsteroidActor, AActor* OtherActor)
 {
+	if (OtherActor->ActorHasTag("Bounds"))
+	{
+		bDestroy = true;
+	}
 
+	if (OtherActor->ActorHasTag("Player"))
+	{
+		bHit = true;
+		ASS_Player* PlayerActor = Cast<ASS_Player>(OtherActor);
+		PlayerActor->GetDamage(30.0f);
+	}
+
+	if (OtherActor->ActorHasTag("Projectile"))
+	{
+		bHit = true;
+	}
 }
 
 // Called when the game starts or when spawned
@@ -77,5 +93,23 @@ void AHazard::Tick(float DeltaTime)
 
 	SetActorRotation(FRotator(InitialRotation * 100.0f, InitialRotation * 50.0f, 0.0f));
 	SetActorLocation(FVector(FVector(Initial_X_Location, Initial_Y_Location, 0.0f)));
+
+	if (bDestroy)
+	{
+		Destroy();
+	}
+
+	if (bHit)
+	{
+		AsteroidExplosionFX->Activate();
+		AsteroidExplosionSound->Activate();
+		MeshComponent->SetVisibility(false);
+		SetActorEnableCollision(false);
+		SelfDestructTimer -= DeltaTime;
+		if (SelfDestructTimer <= 0.0f)
+		{
+			bDestroy = true;
+		}
+	}
 }
 

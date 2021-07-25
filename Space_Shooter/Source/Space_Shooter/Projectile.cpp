@@ -19,7 +19,7 @@ AProjectile::AProjectile()
 
 	ProjectileSpeed = 0.0f;
 	bHit = false;
-	bDestory = false;
+	bDestroy = false;
 }
 
 // Called when the game starts or when spawned
@@ -37,6 +37,11 @@ void AProjectile::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	ProcessTranslation(DeltaTime);
+
+	if (bDestroy)
+	{
+		Destroy();
+	}
 }
 
 void AProjectile::ProcessTranslation(float DeltaTime)
@@ -55,5 +60,9 @@ void AProjectile::ProcessTranslation(float DeltaTime)
 
 void AProjectile::OnBeginOverlap(AActor* ProjectileActor, AActor* OtherActor)
 {
+	if (OtherActor->ActorHasTag("Bounds"))
+	{
+		bDestroy = true;
+	}
 }
 

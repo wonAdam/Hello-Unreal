@@ -131,6 +131,10 @@ public:
 	
 	void ProcessFiring(float DeltaTime);
 
+	void CollectPickup();
+
+	void GetDamage(float Amount);
+
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 

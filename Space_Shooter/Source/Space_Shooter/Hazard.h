@@ -55,7 +55,7 @@ public:
 	float Spawn_Y_Velocity;
 
 	bool bHit;
-	bool bStartDestroyTimer;
+	bool bDestroy;
 
 protected:
 	// Called when the game starts or when spawned

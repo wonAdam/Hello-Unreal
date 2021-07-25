@@ -4,43 +4,29 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Components/StaticMeshComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "Projectile.generated.h"
+#include "Components/AudioComponent.h"
+#include "Components/StaticMeshComponent.h"
+#include "Pickup.generated.h"
 
 UCLASS()
-class SPACE_SHOOTER_API AProjectile : public AActor
+class SPACE_SHOOTER_API APickup : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AProjectile();
+	APickup();
 
 public:
 	UPROPERTY(EditAnywhere)
 	UStaticMeshComponent* MeshComponent;
 
 	UPROPERTY(EditAnywhere)
-	UCapsuleComponent* CapsuleCollision;
-
-	UPROPERTY(EditAnywhere)
-	float ProjectileSpeed;
+	UCapsuleComponent* CollisionComponent;
 
 	UFUNCTION()
-	void OnBeginOverlap(AActor* ProjectileActor, AActor* OtherActor);
-
-	UPROPERTY(VisibleAnywhere)
-	FVector CurrentLocation;
-
-	UPROPERTY(VisibleAnywhere)
-	bool bHit;
-
-	UPROPERTY(VisibleAnywhere)
-	bool bDestroy;
-
-private:
-	void ProcessTranslation(float DeltaTime);
+	void OnBeginOverlap(AActor* PickupActor, AActor* OtherActor);
 
 protected:
 	// Called when the game starts or when spawned
@@ -49,4 +35,5 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
 };

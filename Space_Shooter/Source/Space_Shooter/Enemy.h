@@ -8,6 +8,7 @@
 #include "Components/AudioComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Pickup.h"
 #include "Projectile.h"
 #include "Enemy.generated.h"
 
@@ -43,6 +44,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AProjectile> EnemyProjectile;
 
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<APickup> Pickup;
+
 	UWorld* ThisWorld;
 
 	UPROPERTY(EditAnywhere)
@@ -57,6 +61,7 @@ public:
 
 	bool bHit;
 	bool bDestroy;
+	bool bSpawnedPickup;
 
 	float fDestroyTimer;
 	float fBurstDelay;

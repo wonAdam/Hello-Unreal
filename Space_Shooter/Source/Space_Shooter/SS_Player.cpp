@@ -76,6 +76,9 @@ void ASS_Player::FireWeapon()
 
 void ASS_Player::OnBeginOverlap(AActor* PlayerActor, AActor* OtherActor)
 {
+
+
+
 }
 
 // Called when the game starts or when spawned
@@ -168,6 +171,30 @@ void ASS_Player::ProcessFiring(float DeltaTime)
 	{
 		FireWeapon();
 		FiringCoolTime = WeaponFireRate;
+	}
+}
+
+void ASS_Player::CollectPickup()
+{
+	if (CurrentHealth < MaxHealth)
+	{
+		CurrentHealth = FMath::Min(CurrentHealth + 30, MaxHealth);
+	}
+	else if (CurrentArmor < MaxArmor)
+	{
+		CurrentArmor = FMath::Min(CurrentArmor + 30, MaxArmor);
+	}
+}
+
+void ASS_Player::GetDamage(float Amount)
+{
+	if (CurrentArmor > 0.0f)
+	{
+		CurrentArmor = FMath::Max(CurrentArmor - Amount, 0.0f);
+	}
+	else if (CurrentHealth > 0.0f)
+	{
+		CurrentHealth = FMath::Max(CurrentHealth - Amount, 0.0f);
 	}
 }
 

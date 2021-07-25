@@ -36,6 +36,7 @@ void AEnemy::BeginPlay()
 	FiringCoolTime = 0.0f;
 	bHit = false;
 	bDestroy = false;
+	bSpawnedPickup = false;
 	fDestroyTimer = 1.0f;
 
 	ExplosionFX->Deactivate();
@@ -83,7 +84,7 @@ void AEnemy::ProcessDestruction(float DeltaTime)
 		Destroy();
 	}
 
-	if (bHit)
+	if (bHit && !bDestroy)
 	{
 		MeshComponent->SetVisibility(false);
 		SetActorEnableCollision(false);
@@ -95,6 +96,13 @@ void AEnemy::ProcessDestruction(float DeltaTime)
 		if (fDestroyTimer <= 0.0f)
 		{
 			bDestroy = true;
+		}
+
+		if (!bSpawnedPickup)
+		{
+			bSpawnedPickup = true;
+			FActorSpawnParameters Params = {};
+			GetWorld()->SpawnActor(Pickup, &CurrentLocation, &CurrentRotation, Params);
 		}
 	}
 }
