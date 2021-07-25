@@ -44,11 +44,6 @@ void ASS_GameMode::Tick(float DeltaTime)
 					&EnemySpawnRot, 
 					AsteroidSpawnParameters
 				);
-			
-			//if (NewEnemy)
-			//{
-			//	NewEnemy->SetActorLocation(FVector(1000.0f, 0.0f, 0.0f));
-			//}
 		}
 	}
 

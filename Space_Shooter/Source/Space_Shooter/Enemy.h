@@ -71,6 +71,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void ProcessDestruction(float DeltaTime);
+
 	void ProcessTranslation(float DeltaTime);
 
 	void ProcessFiring(float DeltaTime);

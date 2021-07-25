@@ -36,7 +36,7 @@ void AEnemy::BeginPlay()
 	FiringCoolTime = 0.0f;
 	bHit = false;
 	bDestroy = false;
-	fDestroyTimer = 0.0f;
+	fDestroyTimer = 1.0f;
 
 	ExplosionFX->Deactivate();
 	ExplosionSound->Deactivate();
@@ -48,6 +48,20 @@ void AEnemy::BeginPlay()
 
 void AEnemy::OnBeginOverlap(AActor* EnemyActor, AActor* OtherActor)
 {
+	if (OtherActor->ActorHasTag("Bounds"))
+	{
+		bDestroy = true;
+	}
+
+	if (OtherActor->ActorHasTag("Asteroid") || OtherActor->ActorHasTag("Player"))
+	{
+		bHit = true;
+	}
+
+	if (OtherActor->ActorHasTag("Projectile"))
+	{
+		bHit = true;
+	}
 }
 
 // Called every frame
@@ -58,6 +72,31 @@ void AEnemy::Tick(float DeltaTime)
 	ProcessTranslation(DeltaTime);
 
 	ProcessFiring(DeltaTime);
+
+	ProcessDestruction(DeltaTime);
+}
+
+void AEnemy::ProcessDestruction(float DeltaTime)
+{
+	if (bDestroy)
+	{
+		Destroy();
+	}
+
+	if (bHit)
+	{
+		MeshComponent->SetVisibility(false);
+		SetActorEnableCollision(false);
+		ExplosionFX->Activate();
+		ExplosionSound->Activate();
+		ParticleSystem->Deactivate();
+		fDestroyTimer -= DeltaTime;
+
+		if (fDestroyTimer <= 0.0f)
+		{
+			bDestroy = true;
+		}
+	}
 }
 
 void AEnemy::ProcessTranslation(float DeltaTime)
