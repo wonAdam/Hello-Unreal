@@ -45,12 +45,13 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction(TEXT("Run"), EInputEvent::IE_Pressed, this, &ThisClass::OnShiftKeyPressed);
 	PlayerInputComponent->BindAction(TEXT("Run"), EInputEvent::IE_Released, this, &ThisClass::OnShiftKeyReleased);
 	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Pressed, this, &ThisClass::OnShootKeyPressed);
-	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Axis, this, &ThisClass::OnShootKeyPressed);
+	PlayerInputComponent->BindAction(TEXT("Crunch"), EInputEvent::IE_Pressed, this, &ThisClass::OnCtrlKeyPressed);
+	PlayerInputComponent->BindAction(TEXT("Crunch"), EInputEvent::IE_Released, this, &ThisClass::OnCtrlKeyReleased);
 }
 
 void AShooterCharacter::MoveForward(float AxisValue)
 {
-	if(!bIsRunning)
+	if(!bIsRunning || bIsCrunched)
 		AxisValue /= 3;
 
 	AddMovementInput(GetActorForwardVector() * AxisValue);
@@ -58,7 +59,7 @@ void AShooterCharacter::MoveForward(float AxisValue)
 
 void AShooterCharacter::MoveRight(float AxisValue)
 {
-	if (!bIsRunning)
+	if (!bIsRunning || bIsCrunched)
 		AxisValue /= 3;
 
 	AddMovementInput(GetActorRightVector() * AxisValue);
@@ -82,6 +83,16 @@ void AShooterCharacter::OnShiftKeyPressed()
 void AShooterCharacter::OnShiftKeyReleased()
 {
 	bIsRunning = false;
+}
+
+void AShooterCharacter::OnCtrlKeyPressed()
+{
+	bIsCrunched = true;
+}
+
+void AShooterCharacter::OnCtrlKeyReleased()
+{
+	bIsCrunched = false;
 }
 
 void AShooterCharacter::OnShootKeyPressed()

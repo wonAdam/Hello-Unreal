@@ -8,7 +8,7 @@
 
 class AGun;
 
-UCLASS()
+UCLASS(BlueprintType)
 class SIMPLESHOOTER_API AShooterCharacter : public ACharacter
 {
 	GENERATED_BODY()
@@ -27,6 +27,10 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AShooterCharacter")
+	bool bIsCrunched;
 
 private:
 	UPROPERTY(EditAnywhere)
@@ -48,4 +52,6 @@ private:
 	void OnShiftKeyPressed();
 	void OnShiftKeyReleased();
 	void OnShootKeyPressed();
+	void OnCtrlKeyPressed();
+	void OnCtrlKeyReleased();
 };
