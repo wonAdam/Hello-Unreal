@@ -44,6 +44,8 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &ThisClass::Jump);
 	PlayerInputComponent->BindAction(TEXT("Run"), EInputEvent::IE_Pressed, this, &ThisClass::OnShiftKeyPressed);
 	PlayerInputComponent->BindAction(TEXT("Run"), EInputEvent::IE_Released, this, &ThisClass::OnShiftKeyReleased);
+	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Pressed, this, &ThisClass::OnShootKeyPressed);
+	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Axis, this, &ThisClass::OnShootKeyPressed);
 }
 
 void AShooterCharacter::MoveForward(float AxisValue)
@@ -80,6 +82,14 @@ void AShooterCharacter::OnShiftKeyPressed()
 void AShooterCharacter::OnShiftKeyReleased()
 {
 	bIsRunning = false;
+}
+
+void AShooterCharacter::OnShootKeyPressed()
+{
+	if (Gun)
+	{
+		Gun->PullTrigger();
+	}
 }
 
 

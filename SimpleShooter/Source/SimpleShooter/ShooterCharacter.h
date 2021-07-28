@@ -47,4 +47,5 @@ private:
 	void LookRight(float AxisValue);
 	void OnShiftKeyPressed();
 	void OnShiftKeyReleased();
+	void OnShootKeyPressed();
 };

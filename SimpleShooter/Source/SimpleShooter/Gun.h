@@ -24,10 +24,16 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
+	void PullTrigger();
+
+public:
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* Root;
 
 	UPROPERTY(VisibleAnywhere)
 	USkeletalMeshComponent* Mesh;
+
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* MuzzleEffect;
 
 };
