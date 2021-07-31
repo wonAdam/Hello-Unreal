@@ -26,14 +26,20 @@ public:
 public:
 	void PullTrigger();
 
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void BP_PullTrigger();
+
 public:
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* Root;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	USkeletalMeshComponent* Mesh;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UParticleSystem* MuzzleEffect;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float MaxRange = 1000.0f;
 
 };

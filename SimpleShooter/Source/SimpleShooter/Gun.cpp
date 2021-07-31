@@ -5,6 +5,8 @@
 
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "DrawDebugHelpers.h"
+#include "Engine/World.h"
 
 // Sets default values
 AGun::AGun()
@@ -36,5 +38,35 @@ void AGun::Tick(float DeltaTime)
 void AGun::PullTrigger()
 {
 	UGameplayStatics::SpawnEmitterAttached(MuzzleEffect, Mesh, TEXT("MuzzleFlashSocket"));
+
+	APawn* OwnerPawn = Cast<APawn>(GetOwner());
+	if (!OwnerPawn) return;
+	AController* OwnerController = OwnerPawn->GetController();
+	if (!OwnerController) return;
+
+	FVector Location;
+	FRotator Rotation;
+	OwnerController->GetPlayerViewPoint(OUT Location, OUT Rotation);
+
+	FVector End = Location + Rotation.Vector() * MaxRange;
+
+	//DrawDebugCamera(GetWorld(), Location, Rotation, 90, 2, FColor::Red, true);
+	//DrawDebugPoint(GetWorld(), Location, 20, FColor::Yellow, true);
+
+	FHitResult HitResult;
+	bool bSuccess = GetWorld()->LineTraceSingleByChannel(HitResult, Location, End, ECollisionChannel::ECC_GameTraceChannel1);
+
+	if (HitResult.bBlockingHit)
+	{
+		DrawDebugPoint(GetWorld(), HitResult.Location, 20, FColor::Red, true);
+		DrawDebugLine(GetWorld(), Location, HitResult.Location, FColor::Red, true, 1, 0, 2);
+	}
+
+	if (bSuccess)
+	{
+		DrawDebugPoint(GetWorld(), HitResult.Location, 20, FColor::Red, true);
+		DrawDebugLine(GetWorld(), Location, HitResult.Location, FColor::Red, true, 1, 0, 2);
+	}
+
 }
 

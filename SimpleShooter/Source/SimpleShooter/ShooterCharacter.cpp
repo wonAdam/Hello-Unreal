@@ -99,7 +99,7 @@ void AShooterCharacter::OnShootKeyPressed()
 {
 	if (Gun)
 	{
-		Gun->PullTrigger();
+		Gun->BP_PullTrigger();
 	}
 }
 
