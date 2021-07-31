@@ -40,6 +40,9 @@ public:
 	UParticleSystem* MuzzleEffect;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UParticleSystem* MuzzleSplash;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float MaxRange = 1000.0f;
 
 };
