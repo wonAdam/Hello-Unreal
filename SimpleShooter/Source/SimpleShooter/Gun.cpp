@@ -58,14 +58,13 @@ void AGun::PullTrigger()
 
 	if (HitResult.bBlockingHit)
 	{
-		DrawDebugPoint(GetWorld(), HitResult.Location, 20, FColor::Red, true);
-		DrawDebugLine(GetWorld(), Location, HitResult.Location, FColor::Red, true, 1, 0, 2);
-	}
-
-	if (bSuccess)
-	{
-		DrawDebugPoint(GetWorld(), HitResult.Location, 20, FColor::Red, true);
-		DrawDebugLine(GetWorld(), Location, HitResult.Location, FColor::Red, true, 1, 0, 2);
+		FVector ShotDirection = -Rotation.Vector();
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MuzzleSplash, HitResult.Location, ShotDirection.Rotation());
+		if (AActor* HitActor = HitResult.GetActor())
+		{
+			FPointDamageEvent DamageEvent(Damage, HitResult, ShotDirection, nullptr);
+			HitActor->TakeDamage(Damage, DamageEvent, OwnerController, this);
+		}
 	}
 
 }

@@ -45,4 +45,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float MaxRange = 1000.0f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float Damage = 10.0f;
+
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly)
+
 };

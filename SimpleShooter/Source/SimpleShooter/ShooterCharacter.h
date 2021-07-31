@@ -28,13 +28,31 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AShooterCharacter")
+	// overriding AActor::TakeDamage
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
+
+private:
 	bool bIsCrunched;
+
+	bool bIsDead;
+
+public:
+	UFUNCTION(BlueprintPure)
+	bool IsDead() const { return bIsDead; }
+
+	UFUNCTION(BlueprintPure)
+	bool IsCrunched() const { return bIsCrunched; }
 
 private:
 	UPROPERTY(EditAnywhere)
 	float RotationRate = 80.0f;
+
+	UPROPERTY(EditDefaultsOnly)
+	float MaxHealth = 100;
+
+	UPROPERTY(VisibleAnywhere)
+	float Health;
 
 	bool bIsRunning = false;
 

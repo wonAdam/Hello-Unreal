@@ -23,6 +23,8 @@ void AShooterCharacter::BeginPlay()
 	GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None);
 	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 	Gun->SetOwner(this);
+
+	Health = MaxHealth;
 }
 
 // Called every frame
@@ -47,6 +49,24 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Pressed, this, &ThisClass::OnShootKeyPressed);
 	PlayerInputComponent->BindAction(TEXT("Crunch"), EInputEvent::IE_Pressed, this, &ThisClass::OnCtrlKeyPressed);
 	PlayerInputComponent->BindAction(TEXT("Crunch"), EInputEvent::IE_Released, this, &ThisClass::OnCtrlKeyReleased);
+}
+
+float AShooterCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	if (bIsDead) return 0.0f;
+
+	float DamageApplied = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	DamageApplied = FMath::Min(Health, DamageApplied);
+
+	Health -= DamageApplied;
+
+	if (Health == 0.0f)
+	{
+		bIsDead = true;
+	}
+
+	return DamageApplied;
 }
 
 void AShooterCharacter::MoveForward(float AxisValue)
@@ -99,7 +119,7 @@ void AShooterCharacter::OnShootKeyPressed()
 {
 	if (Gun)
 	{
-		Gun->BP_PullTrigger();
+		Gun->PullTrigger();
 	}
 }
 
