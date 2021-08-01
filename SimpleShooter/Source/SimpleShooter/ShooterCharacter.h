@@ -44,6 +44,12 @@ public:
 	UFUNCTION(BlueprintPure)
 	bool IsCrunched() const { return bIsCrunched; }
 
+	UPROPERTY(EditAnywhere)
+	AActor* PatrolStart;
+
+	UPROPERTY(EditAnywhere)
+	AActor* PatrolEnd;
+
 private:
 	UPROPERTY(EditAnywhere)
 	float RotationRate = 80.0f;
