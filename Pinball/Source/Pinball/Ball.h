@@ -23,12 +23,21 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	USceneComponent* RootComp;
+	FVector DefaultGravity;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float LineTraceLength;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float TableStickyness;
+
+public:
+	UPROPERTY(BlueprintReadOnly)
+	USceneComponent* RootComp;
+
+	UPROPERTY(BlueprintReadOnly)
 	UStaticMeshComponent* MeshComp;
 
 };

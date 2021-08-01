@@ -21,7 +21,6 @@ ABall::ABall()
 void ABall::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -29,5 +28,14 @@ void ABall::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	MeshComp->AddImpulse(DefaultGravity * DeltaTime, NAME_None, true);
+
+	FHitResult Hit;
+	GetWorld()->LineTraceSingleByChannel(Hit, GetActorLocation(), GetActorLocation() + FVector::DownVector * LineTraceLength, ECollisionChannel::ECC_Visibility);
+
+	if (Hit.bBlockingHit)
+	{
+		MeshComp->AddImpulse(Hit.ImpactNormal * (-1.0f) * TableStickyness * DeltaTime, NAME_None, true);
+	}
 }
 
