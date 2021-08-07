@@ -10,11 +10,9 @@ ABall::ABall()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	RootComp = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	
-	RootComponent = RootComp;
-	MeshComp->SetupAttachment(RootComp);
+	RootComponent = MeshComp;
 }
 
 // Called when the game starts or when spawned
@@ -29,13 +27,6 @@ void ABall::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	MeshComp->AddImpulse(DefaultGravity * DeltaTime, NAME_None, true);
-
-	FHitResult Hit;
-	GetWorld()->LineTraceSingleByChannel(Hit, GetActorLocation(), GetActorLocation() + FVector::DownVector * LineTraceLength, ECollisionChannel::ECC_Visibility);
-
-	if (Hit.bBlockingHit)
-	{
-		MeshComp->AddImpulse(Hit.ImpactNormal * (-1.0f) * TableStickyness * DeltaTime, NAME_None, true);
-	}
+	MeshComp->AddImpulse(FVector::DownVector * TableStickyness * DeltaTime, NAME_None, true);
 }
 

@@ -4,16 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Ball.generated.h"
+#include "Bumper.generated.h"
+
+class UCapsuleComponent;
+class ABall;
 
 UCLASS()
-class PINBALL_API ABall : public AActor
+class PINBALL_API ABumper : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ABall();
+	ABumper();
 
 protected:
 	// Called when the game starts or when spawned
@@ -23,20 +26,26 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-public:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	FVector DefaultGravity;
+private:
+	void BeginOverlap(UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult);
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	float LineTraceLength;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	float TableStickyness;
+	void Bump(ABall* Ball);
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	USceneComponent* RootComp;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UStaticMeshComponent* MeshComp;
+	UStaticMeshComponent* BumperBaseMeshComp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UStaticMeshComponent* BumperMechanismMeshComp;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UCapsuleComponent* CapsuleCollision;
 };
