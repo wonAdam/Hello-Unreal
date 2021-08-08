@@ -16,13 +16,6 @@ AFlipper::AFlipper()
 	
 	RootComponent = RootComp;
 	MeshComp->SetupAttachment(RootComp);
-
-	 //Blueprint Implemented
-	//if(Type == EFlipperType::Left)
-	//	RootComp->SetRelativeScale3D(FVector(-1.0f, 1.0f, 1.0f));
-	//else 
-	//	RootComp->SetRelativeScale3D(FVector(1.0f, 1.0f, 1.0f));
-		
 }
 
 // Called when the game starts or when spawned
@@ -53,8 +46,8 @@ void AFlipper::Flip()
 		EndRotation, 
 		false, 
 		false,
-		0.2f, 
-		false,
+		0.1f, 
+		true,
 		EMoveComponentAction::Move,
 		LatentActionInfo
 	);
@@ -74,8 +67,8 @@ void AFlipper::Flop()
 		StartRotation,
 		false,
 		false,
-		0.4f,
-		false,
+		0.2f,
+		true,
 		EMoveComponentAction::Move,
 		LatentActionInfo
 	);

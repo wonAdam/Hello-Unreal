@@ -14,4 +14,7 @@ class PINBALL_API APinballGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+	APinballGameModeBase();
+
 };
