@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "PinballGameModeBase.generated.h"
 
+class ABall;
+
 /**
  * 
  */
@@ -16,5 +18,16 @@ class PINBALL_API APinballGameModeBase : public AGameModeBase
 	
 public:
 	APinballGameModeBase();
+
+public:
+	UFUNCTION(BlueprintCallable)
+	void SpawnBall();
+
+	UFUNCTION()
+	void OnBallDestroy(AActor* DestroyedActor);
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TSubclassOf<ABall> BallClass;
 
 };

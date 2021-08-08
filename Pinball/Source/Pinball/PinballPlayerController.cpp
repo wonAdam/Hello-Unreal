@@ -4,6 +4,7 @@
 #include "PinballPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Flipper.h"
+#include "Plunger.h"
 
 // Called when the game starts or when spawned
 void APinballPlayerController::BeginPlay()
@@ -11,6 +12,8 @@ void APinballPlayerController::BeginPlay()
 	Super::BeginPlay();
 
 	DetectFlippers();
+
+	DetectPlunger();
 }
 
 void APinballPlayerController::SetupInputComponent()
@@ -21,6 +24,8 @@ void APinballPlayerController::SetupInputComponent()
 	InputComponent->BindAction("LeftFlipper", IE_Released, this, &ThisClass::OnReleasedLeftCtrl);
 	InputComponent->BindAction("RightFlipper", IE_Pressed, this, &ThisClass::OnPressedRightCtrl);
 	InputComponent->BindAction("RightFlipper", IE_Released, this, &ThisClass::OnReleasedRightCtrl);
+	InputComponent->BindAction("Plunger", IE_Pressed, this, &ThisClass::OnPressedPlunger);
+	InputComponent->BindAction("Plunger", IE_Released, this, &ThisClass::OnReleasedPlunger);
 }
 
 void APinballPlayerController::OnPressedLeftCtrl()
@@ -55,6 +60,16 @@ void APinballPlayerController::OnReleasedRightCtrl()
 	}
 }
 
+void APinballPlayerController::OnPressedPlunger()
+{
+	Plunger->ChargePlunger();
+}
+
+void APinballPlayerController::OnReleasedPlunger()
+{
+	Plunger->StopCharge();
+}
+
 void APinballPlayerController::DetectFlippers()
 {
 	TArray<AActor*> Flippers;
@@ -71,4 +86,9 @@ void APinballPlayerController::DetectFlippers()
 		else
 			LeftFlippers.Add(Flipper);
 	}
+}
+
+void APinballPlayerController::DetectPlunger()
+{
+	Plunger = Cast<APlunger>(UGameplayStatics::GetActorOfClass(GetWorld(), APlunger::StaticClass()));
 }

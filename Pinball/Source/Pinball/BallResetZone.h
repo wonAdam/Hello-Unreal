@@ -4,19 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Bumper.generated.h"
+#include "BallResetZone.generated.h"
 
-class UCapsuleComponent;
-class ABall;
+class UBoxComponent;
 
 UCLASS()
-class PINBALL_API ABumper : public AActor
+class PINBALL_API ABallResetZone : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ABumper();
+	ABallResetZone();
 
 protected:
 	// Called when the game starts or when spawned
@@ -26,7 +25,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-private:
+public:
 	UFUNCTION()
 	void BeginOverlap(UPrimitiveComponent* OverlappedComponent,
 		AActor* OtherActor,
@@ -35,18 +34,7 @@ private:
 		bool bFromSweep,
 		const FHitResult& SweepResult);
 
-	void Bump(ABall* Ball);
-
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	USceneComponent* RootComp;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UStaticMeshComponent* BumperBaseMeshComp;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UStaticMeshComponent* BumperMechanismMeshComp;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UCapsuleComponent* CapsuleCollision;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UBoxComponent* BoxCollision;
 };

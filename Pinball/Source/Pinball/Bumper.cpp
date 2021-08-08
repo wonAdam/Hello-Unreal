@@ -19,12 +19,8 @@ ABumper::ABumper()
 
 	RootComponent = RootComp;
 	BumperBaseMeshComp->SetupAttachment(RootComp);
-	BumperBaseMeshComp->SetRelativeLocation(FVector::ZeroVector);
 	BumperMechanismMeshComp->SetupAttachment(RootComp);
-	BumperMechanismMeshComp->SetRelativeLocation(FVector::ZeroVector);
 	CapsuleCollision->SetupAttachment(RootComp);
-	CapsuleCollision->SetRelativeLocation(FVector::ZeroVector);
-
 }
 
 // Called when the game starts or when spawned

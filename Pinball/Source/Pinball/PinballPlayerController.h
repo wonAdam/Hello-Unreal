@@ -7,6 +7,7 @@
 #include "PinballPlayerController.generated.h"
 
 class AFlipper;
+class APlunger;
 
 /**
  * 
@@ -23,20 +24,29 @@ protected:
 
 public:
 	UFUNCTION(BlueprintCallable)
-		void OnPressedLeftCtrl();
+	void OnPressedLeftCtrl();
 
 	UFUNCTION(BlueprintCallable)
-		void OnReleasedLeftCtrl();
+	void OnReleasedLeftCtrl();
 
 	UFUNCTION(BlueprintCallable)
-		void OnPressedRightCtrl();
+	void OnPressedRightCtrl();
 
 	UFUNCTION(BlueprintCallable)
-		void OnReleasedRightCtrl();
+	void OnReleasedRightCtrl();
+
+	UFUNCTION(BlueprintCallable)
+	void OnPressedPlunger();
+	
+	UFUNCTION(BlueprintCallable)
+	void OnReleasedPlunger();
 
 private:
 	UFUNCTION(BlueprintCallable)
 	void DetectFlippers();
+
+	UFUNCTION(BlueprintCallable)
+	void DetectPlunger();
 	
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -44,4 +54,7 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TArray<AFlipper*> RightFlippers;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	APlunger* Plunger;
 };

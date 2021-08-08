@@ -46,7 +46,7 @@ void AFlipper::Flip()
 		EndRotation, 
 		false, 
 		false,
-		0.1f, 
+		0.02f, 
 		true,
 		EMoveComponentAction::Move,
 		LatentActionInfo
@@ -67,7 +67,7 @@ void AFlipper::Flop()
 		StartRotation,
 		false,
 		false,
-		0.2f,
+		0.15f,
 		true,
 		EMoveComponentAction::Move,
 		LatentActionInfo
