@@ -26,7 +26,13 @@ public:
 	UFUNCTION()
 	void OnBallDestroy(AActor* DestroyedActor);
 
+	UFUNCTION(BlueprintCallable)
+	int AddScore(int PointsToAdd);
+
 public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	int Score;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<ABall> BallClass;
 
