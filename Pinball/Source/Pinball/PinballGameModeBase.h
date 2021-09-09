@@ -29,9 +29,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	int AddScore(int PointsToAdd);
 
+	UFUNCTION(BlueprintCallable)
+	void EndGame();
+
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	int Score;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	int BallsRemaining;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<ABall> BallClass;

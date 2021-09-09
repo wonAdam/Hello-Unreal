@@ -8,7 +8,7 @@
 #include "Ball.h"
 
 APinballGameModeBase::APinballGameModeBase()
-	: Score(0)
+	: Score(0), BallsRemaining(3)
 {
 	PlayerControllerClass = APinballPlayerController::StaticClass();
 	DefaultPawnClass = nullptr;
@@ -32,10 +32,23 @@ void APinballGameModeBase::SpawnBall()
 
 void APinballGameModeBase::OnBallDestroy(AActor* DestroyedActor)
 {
-	SpawnBall();
+	if (BallsRemaining > 0)
+	{
+		--BallsRemaining;
+		SpawnBall();
+	}
+	else
+	{
+		//GameOver
+		EndGame();
+	}
 }
 
 int APinballGameModeBase::AddScore(int PointsToAdd)
 {
 	return Score += PointsToAdd;
+}
+
+void APinballGameModeBase::EndGame()
+{
 }
