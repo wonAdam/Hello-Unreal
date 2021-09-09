@@ -35,6 +35,9 @@ public:
 		const FHitResult& SweepResult);
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	USceneComponent* RootComp;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UBoxComponent* BoxCollision;
 };

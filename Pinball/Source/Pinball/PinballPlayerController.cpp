@@ -3,6 +3,7 @@
 
 #include "PinballPlayerController.h"
 #include "Kismet/GameplayStatics.h"
+#include "Blueprint/WidgetLayoutLibrary.h"
 #include "Flipper.h"
 #include "Plunger.h"
 
