@@ -49,6 +49,7 @@ int APinballGameModeBase::AddScore(int PointsToAdd)
 	return Score += PointsToAdd;
 }
 
-void APinballGameModeBase::EndGame()
+int APinballGameModeBase::GetCurrentScore()
 {
+	return Score;
 }

@@ -29,8 +29,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	int AddScore(int PointsToAdd);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintImplementableEvent)
 	void EndGame();
+
+	UFUNCTION(BlueprintCallable)
+	int GetCurrentScore();
 
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
