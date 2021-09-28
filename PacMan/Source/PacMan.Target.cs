@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 public class PacManTarget : TargetRules
 {
-	public PacManTarget( TargetInfo Target) : base(Target)
+	public PacManTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Game;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
-		ExtraModuleNames.AddRange( new string[] { "PacMan" } );
+		ExtraModuleNames.Add("PacMan");
 	}
 }
