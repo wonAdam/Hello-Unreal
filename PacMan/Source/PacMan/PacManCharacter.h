@@ -6,6 +6,16 @@
 #include "GameFramework/Character.h"
 #include "PacManCharacter.generated.h"
 
+UENUM(BlueprintType)
+enum class EMoveDirection : uint8
+{
+	Right,
+	Left,
+	Top,
+	Bottom,
+};
+
+
 UCLASS(config=Game)
 class APacManCharacter : public ACharacter
 {
@@ -18,6 +28,7 @@ class APacManCharacter : public ACharacter
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
+
 public:
 	APacManCharacter();
 
@@ -35,9 +46,11 @@ protected:
 	void OnResetVR();
 
 	/** Called for forwards/backward input */
+	UFUNCTION(BlueprintCallable)
 	void MoveForward(float Value);
 
 	/** Called for side to side input */
+	UFUNCTION(BlueprintCallable)
 	void MoveRight(float Value);
 
 	/** 

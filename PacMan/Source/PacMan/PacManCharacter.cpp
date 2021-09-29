@@ -57,8 +57,8 @@ void APacManCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
-	PlayerInputComponent->BindAxis("MoveForward", this, &APacManCharacter::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &APacManCharacter::MoveRight);
+	//PlayerInputComponent->BindAxis("MoveForward", this, &APacManCharacter::MoveForward);
+	//PlayerInputComponent->BindAxis("MoveRight", this, &APacManCharacter::MoveRight);
 
 	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
 	// "turn" handles devices that provide an absolute delta, such as a mouse.
