@@ -35,12 +35,13 @@ private:
 
 	void Rotate();
 
-public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tank/Movement", meta = (AllowPrivateAccess = "true"))
 	float MoveSpeed = 100.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tank/Movement", meta = (AllowPrivateAccess = "true"))
 	float RotateSpeed = 100.0f;
+
+	APlayerController* PlayerControllerRef;
 
 public:
 	// Sets default values for this pawn's properties
@@ -49,6 +50,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	virtual void HandleDestruction() override;
 
 public:
 	// Called every frame
