@@ -36,6 +36,7 @@ public:
 	// Sets default values for this pawn's properties
 	APawnBase();
 
+	virtual void HandleDestruction();
 
 protected:
 
@@ -43,5 +44,4 @@ protected:
 
 	virtual void Fire();
 
-	virtual void HandleDestruction();
 };
