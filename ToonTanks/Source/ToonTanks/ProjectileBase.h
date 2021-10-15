@@ -7,6 +7,7 @@
 #include "ProjectileBase.generated.h"
 
 class UProjectileMovementComponent;
+class UParticleSystemComponent;
 
 UCLASS()
 class TOONTANKS_API AProjectileBase : public AActor
@@ -20,6 +21,9 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "ProjectileBase/Components", meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* ProjectileMesh;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "ProjectileBase/Components", meta = (AllowPrivateAccess = "true"))
+	UParticleSystemComponent* ParticleTrail;
+
 	UPROPERTY(EditDefaultsOnly, Category = "ProjectileBase/Damage")
 	TSubclassOf<UDamageType> DamageType;
 
@@ -28,6 +32,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "ProjectileBase/Damage", meta = (AllowPrivateAccess = "true"))
 	float Damage = 50.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Effects")
+	UParticleSystem* HitParticle;
 
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
