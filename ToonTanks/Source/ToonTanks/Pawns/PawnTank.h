@@ -43,11 +43,15 @@ private:
 
 	APlayerController* PlayerControllerRef;
 
+	bool bIsPlayerAlive = true;
+
 public:
 	// Sets default values for this pawn's properties
 	APawnTank();
 
 	virtual void HandleDestruction() override;
+
+	bool GetIsPlayerAlive();
 
 protected:
 	// Called when the game starts or when spawned

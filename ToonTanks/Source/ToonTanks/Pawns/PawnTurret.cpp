@@ -38,13 +38,11 @@ void APawnTurret::CheckFireCondition()
 		return;
 
 	// If Player Is In Range THEN FIRE !!
-	if (ReturnDistanceToPlayer() <= FireRange)
+	if (ReturnDistanceToPlayer() <= FireRange && PlayerPawn->GetIsPlayerAlive())
 	{
 		// Fire
 		Fire();
 	}
-
-	UE_LOG(LogTemp, Warning, TEXT("Fire Condition Checked"));
 }
 
 
@@ -59,5 +57,7 @@ float APawnTurret::ReturnDistanceToPlayer()
 void APawnTurret::HandleDestruction()
 {
 	Super::HandleDestruction();
+
 	Destroy();
 }
+
