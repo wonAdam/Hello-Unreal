@@ -54,4 +54,8 @@ void APawnBase::Fire()
 void APawnBase::HandleDestruction()
 {
 	UGameplayStatics::SpawnEmitterAtLocation(this, DeathParticle, GetActorLocation(), GetActorRotation(), true);
+
+	UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation());
+
+	GetWorld()->GetFirstPlayerController()->ClientPlayCameraShake(CameraDeathShakeClass);
 }

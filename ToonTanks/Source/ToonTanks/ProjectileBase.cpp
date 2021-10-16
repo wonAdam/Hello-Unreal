@@ -32,6 +32,8 @@ void AProjectileBase::BeginPlay()
 	//ProjectileMovement->InitialSpeed = MovementSpeed;
 	//ProjectileMovement->MaxSpeed = MovementSpeed;
 	InitialLifeSpan = 3.0f;
+
+	UGameplayStatics::PlaySoundAtLocation(this, LaunchSound, GetActorLocation());
 }
 
 void AProjectileBase::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
@@ -45,6 +47,8 @@ void AProjectileBase::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UP
 	}
 
 	UGameplayStatics::SpawnEmitterAtLocation(this, HitParticle, GetActorLocation(), GetActorRotation(), true);
+	UGameplayStatics::PlaySoundAtLocation(this, HitSound, GetActorLocation());
+	GetWorld()->GetFirstPlayerController()->ClientPlayCameraShake(CameraShakeClass);
 
 	Destroy();
 }
