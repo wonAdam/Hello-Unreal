@@ -28,6 +28,9 @@ protected:
 	EControlMode ControlMode;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void OnViewChange();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void OnUpDown(float NewAxisValue);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)

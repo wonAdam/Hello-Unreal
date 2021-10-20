@@ -18,10 +18,12 @@ AABCharacter::AABCharacter()
 
 void AABCharacter::SetControlMode(EControlMode Mode)
 {
+	ControlMode = Mode;
 	switch (Mode)
 	{
 	case EControlMode::GTA:
 	{
+		GetController()->SetControlRotation(SpringArm->GetRelativeRotation());
 		SpringArm->TargetArmLength = 450.0f;
 		SpringArm->SetRelativeRotation(FRotator::ZeroRotator);
 		SpringArm->bUsePawnControlRotation = true;
@@ -39,6 +41,7 @@ void AABCharacter::SetControlMode(EControlMode Mode)
 
 	case EControlMode::DIABLO:
 	{
+		GetController()->SetControlRotation(GetActorRotation());
 		SpringArm->TargetArmLength = 800.0f;
 		SpringArm->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
 		SpringArm->bUsePawnControlRotation = false;
@@ -71,6 +74,25 @@ void AABCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
+
+void AABCharacter::OnViewChange_Implementation()
+{
+	switch (ControlMode)
+	{
+	case EControlMode::GTA:
+	{
+		SetControlMode(EControlMode::DIABLO);
+		break;
+	}
+
+	case EControlMode::DIABLO:
+	{
+		SetControlMode(EControlMode::GTA);
+		break;
+	}
+	}
+}
+
 
 void AABCharacter::OnUpDown_Implementation(float NewAxisValue)
 {
@@ -163,4 +185,5 @@ void AABCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAxis(TEXT("LeftRight"), this, &AABCharacter::OnLeftRight);
 	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &AABCharacter::OnLookUp);
 	PlayerInputComponent->BindAxis(TEXT("Turn"), this, &AABCharacter::OnTurn);
+	PlayerInputComponent->BindAction(TEXT("ViewChange"), EInputEvent::IE_Pressed , this, &AABCharacter::OnViewChange);
 }
