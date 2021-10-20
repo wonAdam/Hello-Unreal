@@ -12,7 +12,8 @@ AABGameMode::AABGameMode()
 
 	// Blueprint'/Game/ThirdPersonBP/Blueprints/ThirdPersonCharacter.ThirdPersonCharacter'
 	// Blueprint'/Game/Blueprints/BP_ABPawn.BP_ABPawn'
-	static ConstructorHelpers::FClassFinder<APawn> BP_ABPAWN_C(TEXT("/Game/Blueprints/BP_ABPawn.BP_ABPawn_C"));
+	// Blueprint'/Game/Blueprints/BP_ABCharacter.BP_ABCharacter'
+	static ConstructorHelpers::FClassFinder<APawn> BP_ABPAWN_C(TEXT("/Game/Blueprints/BP_ABCharacter.BP_ABCharacter_C"));
 	if (BP_ABPAWN_C.Succeeded())
 	{
 		DefaultPawnClass = BP_ABPAWN_C.Class;
