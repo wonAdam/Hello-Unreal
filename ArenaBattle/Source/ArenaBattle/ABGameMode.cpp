@@ -7,15 +7,16 @@
 
 AABGameMode::AABGameMode()
 {
-	DefaultPawnClass = AABPawn::StaticClass();
+	//DefaultPawnClass = AABPawn::StaticClass();
 	PlayerControllerClass = AABPlayerController::StaticClass();
 
-	//// Blueprint'/Game/ThirdPersonBP/Blueprints/ThirdPersonCharacter.ThirdPersonCharacter'
-	//static ConstructorHelpers::FClassFinder<APawn> BP_PAWN_C(TEXT("/Game/ThirdPersonBP/Blueprints/ThirdPersonCharacter.ThirdPersonCharacter_C"));
-	//if (BP_PAWN_C.Succeeded())
-	//{
-	//	DefaultPawnClass = BP_PAWN_C.Class;
-	//}
+	// Blueprint'/Game/ThirdPersonBP/Blueprints/ThirdPersonCharacter.ThirdPersonCharacter'
+	// Blueprint'/Game/Blueprints/BP_ABPawn.BP_ABPawn'
+	static ConstructorHelpers::FClassFinder<APawn> BP_ABPAWN_C(TEXT("/Game/Blueprints/BP_ABPawn.BP_ABPawn_C"));
+	if (BP_ABPAWN_C.Succeeded())
+	{
+		DefaultPawnClass = BP_ABPAWN_C.Class;
+	}
 }
 
 void AABGameMode::PostLogin(APlayerController* NewPlayer)
