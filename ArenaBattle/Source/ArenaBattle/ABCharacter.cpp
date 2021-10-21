@@ -75,6 +75,11 @@ void AABCharacter::Tick(float DeltaTime)
 
 }
 
+void AABCharacter::OnJump_Implementation()
+{
+	ACharacter::Jump();
+}
+
 void AABCharacter::OnViewChange_Implementation()
 {
 	switch (ControlMode)
@@ -186,4 +191,5 @@ void AABCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAxis(TEXT("LookUp"), this, &AABCharacter::OnLookUp);
 	PlayerInputComponent->BindAxis(TEXT("Turn"), this, &AABCharacter::OnTurn);
 	PlayerInputComponent->BindAction(TEXT("ViewChange"), EInputEvent::IE_Pressed , this, &AABCharacter::OnViewChange);
+	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &AABCharacter::OnJump);
 }
