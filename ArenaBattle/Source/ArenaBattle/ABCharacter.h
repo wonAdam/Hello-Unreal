@@ -7,6 +7,8 @@
 #include "GameFramework/FloatingPawnMovement.h"
 #include "ABCharacter.generated.h"
 
+class UABAnimInstance;
+
 UENUM()
 enum class EControlMode : uint8
 {
@@ -26,6 +28,9 @@ public:
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = ControlMode)
 	EControlMode ControlMode;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	void OnAttack();
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void OnJump();
@@ -48,9 +53,17 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void SetControlMode(EControlMode Mode);
 
+	UFUNCTION()
+	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
+
+	void OnNextAttackCheck();
+	bool TryAttack();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	virtual void PostInitializeComponents() override;
 
 public:	
 	// Called every frame
@@ -64,4 +77,19 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = Components)
 	UCameraComponent* Camera;
+
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = Attack, Meta = (AllowPrivateAccess))
+	bool IsAttacking;
+
+	UPROPERTY()
+	UABAnimInstance* AnimInstance;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Attack, Meta = (AllowPrivateAccess))
+	bool CanNextCombo;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Attack, Meta = (AllowPrivateAccess))
+	int32 CurrentCombo;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Attack, Meta = (AllowPrivateAccess))
+	int32 MaxCombo;
 };
