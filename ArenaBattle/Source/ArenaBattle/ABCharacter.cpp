@@ -3,6 +3,8 @@
 
 #include "ABCharacter.h"
 #include "ABAnimInstance.h"
+#include "ABWeapon.h"
+#include "DrawDebugHelpers.h"
 
 // Sets default values
 AABCharacter::AABCharacter()
@@ -20,7 +22,28 @@ AABCharacter::AABCharacter()
 	MaxCombo = 4;
 	CurrentCombo = 0;
 	CanNextCombo = false;
+
+	AttackRange = 200.0f;
+	AttackRadius = 50.0f;
 }
+
+float AABCharacter::TakeDamage(float DamageAmount,
+	struct FDamageEvent const& DamageEvent,
+	class AController* EventInstigator,
+	AActor* DamageCauser)
+{
+	float FinalDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	ABLOG(Warning, TEXT("Actor: %s took Damage %f"), *GetName(), FinalDamage);
+
+	if (FinalDamage > 0.0f)
+	{
+		AnimInstance->SetDeadAnim();
+		SetActorEnableCollision(false);
+	}
+
+	return FinalDamage;
+}
+
 
 void AABCharacter::SetControlMode(EControlMode Mode)
 {
@@ -83,8 +106,28 @@ void AABCharacter::PostInitializeComponents()
 	AnimInstance->OnMontageEnded.AddDynamic(this, &AABCharacter::OnAttackMontageEnded);
 
 	AnimInstance->OnNextAttackCheck.AddUObject(this, &AABCharacter::OnNextAttackCheck);
+	AnimInstance->OnAttackHitCheck.AddUObject(this, &AABCharacter::OnAttackHitCheck);
 
 }
+
+void AABCharacter::SetWeapon_Implementation(AABWeapon* NewWeapon)
+{
+	ensure(NewWeapon != nullptr && CurrentWeapon == nullptr);
+
+	FName WeaponSocket(TEXT("hand_rSocket"));
+	if (NewWeapon != nullptr)
+	{
+		NewWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+		NewWeapon->SetOwner(this);
+		CurrentWeapon = NewWeapon;
+	}
+}
+
+bool AABCharacter::CanSetWeapon_Implementation()
+{
+	return CurrentWeapon == nullptr;
+}
+
 
 
 // Called every frame
@@ -131,6 +174,53 @@ bool AABCharacter::TryAttack()
 	}
 
 }
+
+void AABCharacter::OnAttackHitCheck()
+{
+	FCollisionQueryParams MultiParams(NAME_None, false, this);
+	TArray<FHitResult> MultiHitResults;
+	GetWorld()->SweepMultiByChannel(
+		MultiHitResults,
+		GetActorLocation(),
+		GetActorLocation() + GetActorForwardVector() * 200.0f,
+		FQuat::Identity,
+		ECollisionChannel::ECC_GameTraceChannel2, // Attack TraceChannel
+		FCollisionShape::MakeSphere(50.0f),
+		MultiParams
+	);
+
+	for (const auto& SingleResult : MultiHitResults)
+	{
+		if (SingleResult.Actor.IsValid())
+		{
+			ABLOG(Warning, TEXT("Multi Hit Actor Name: %s"), *SingleResult.Actor->GetName());
+		
+			FDamageEvent DamageEvent;
+			SingleResult.Actor->TakeDamage(50.0f, DamageEvent, GetController(), this);
+		}
+	}
+
+#if ENABLE_DRAW_DEBUG
+	FVector TraceVec = GetActorForwardVector() * AttackRange;
+	FVector Center = GetActorLocation() + TraceVec * 0.5f;
+	float HalfHeight = AttackRange * 0.5f + AttackRadius;
+	FQuat CapsuleRot = FRotationMatrix::MakeFromZ(TraceVec).ToQuat();
+	FColor DrawColor = MultiHitResults.Num() > 0 ? FColor::Green : FColor::Red;
+	float DebugLifeTime = 5.0f;
+
+	DrawDebugCapsule(
+		GetWorld(),
+		Center,
+		HalfHeight,
+		AttackRadius,
+		CapsuleRot,
+		DrawColor, 
+		false,
+		DebugLifeTime
+	);
+#endif // ENABLE_DRAW_DEBUG
+}
+
 
 void AABCharacter::OnJump_Implementation()
 {

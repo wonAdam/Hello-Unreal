@@ -10,11 +10,15 @@ UABAnimInstance::UABAnimInstance()
 
 void UABAnimInstance::PlayAttackMontage()
 {
+	ensure(!IsDead);
+
 	Montage_Play(AttackMontage);
 }
 
 void UABAnimInstance::JumpToAttackMontageSection(int32 NewSection)
 {
+	ensure(!IsDead);
+
 	if (Montage_IsPlaying(AttackMontage))
 	{
 		Montage_JumpToSection(GetAttackMontageSectionName(NewSection), AttackMontage);
@@ -45,12 +49,15 @@ void UABAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	auto Pawn = TryGetPawnOwner();
 	if (::IsValid(Pawn))
 	{
-		CurrentPawnSpeed = Pawn->GetVelocity().Size();
-
-		auto Character = Cast<ACharacter>(Pawn);
-		if (Character)
+		if (!IsDead)
 		{
-			IsInAir = Character->GetMovementComponent()->IsFalling();
+			CurrentPawnSpeed = Pawn->GetVelocity().Size();
+
+			auto Character = Cast<ACharacter>(Pawn);
+			if (Character)
+			{
+				IsInAir = Character->GetMovementComponent()->IsFalling();
+			}
 		}
 	}
 }
