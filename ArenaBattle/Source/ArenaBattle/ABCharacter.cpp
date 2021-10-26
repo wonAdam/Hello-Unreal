@@ -4,7 +4,10 @@
 #include "ABCharacter.h"
 #include "ABAnimInstance.h"
 #include "ABWeapon.h"
+#include "ABCharacterStatComponent.h"
 #include "DrawDebugHelpers.h"
+#include "Components/WidgetComponent.h"
+#include "ABCharacterWidget.h"
 
 // Sets default values
 AABCharacter::AABCharacter()
@@ -14,9 +17,22 @@ AABCharacter::AABCharacter()
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	CharacterStat = CreateDefaultSubobject<UABCharacterStatComponent>(TEXT("Stat"));
+	HPBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("HPBar Wdiget"));
 
 	SpringArm->SetupAttachment(RootComponent);
 	Camera->SetupAttachment(SpringArm);
+	HPBarWidget->SetupAttachment(GetMesh());
+
+	//HPBarWidget->SetRelativeLocation(FVector(0.0f, 0.0f, 180.0f));
+	//HPBarWidget->SetWidgetSpace(EWidgetSpace::Screen);
+	//// WidgetBlueprint'/Game/UI/UI_HPBar.UI_HPBar'
+	//static ConstructorHelpers::FClassFinder<UUserWidget> UI_HUD(TEXT("/Game/UI/UI_HPBar.UI_HPBar_C"));
+	//if (UI_HUD.Succeeded())
+	//{
+	//	HPBarWidget->SetWidgetClass(UI_HUD.Class);
+	//	HPBarWidget->SetDrawSize(FVector2D(150.0f, 50.0f));
+	//}
 
 	IsAttacking = false;
 	MaxCombo = 4;
@@ -35,12 +51,7 @@ float AABCharacter::TakeDamage(float DamageAmount,
 	float FinalDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	ABLOG(Warning, TEXT("Actor: %s took Damage %f"), *GetName(), FinalDamage);
 
-	if (FinalDamage > 0.0f)
-	{
-		AnimInstance->SetDeadAnim();
-		SetActorEnableCollision(false);
-	}
-
+	CharacterStat->SetDamage(FinalDamage);
 	return FinalDamage;
 }
 
@@ -95,24 +106,42 @@ void AABCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	SetControlMode(ControlMode);
+
+	auto CharacterWidget = Cast<UABCharacterWidget>(HPBarWidget->GetUserWidgetObject());
+	if (CharacterWidget != nullptr)
+	{
+		CharacterWidget->BindCharacterStat(CharacterStat);
+	}
 }
 
 void AABCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 	AnimInstance = Cast<UABAnimInstance>(GetMesh()->GetAnimInstance());
-	ensure(AnimInstance != nullptr);
+	ABCHECK(AnimInstance != nullptr);
 
 	AnimInstance->OnMontageEnded.AddDynamic(this, &AABCharacter::OnAttackMontageEnded);
 
 	AnimInstance->OnNextAttackCheck.AddUObject(this, &AABCharacter::OnNextAttackCheck);
 	AnimInstance->OnAttackHitCheck.AddUObject(this, &AABCharacter::OnAttackHitCheck);
 
+	CharacterStat->OnHPIsZero.AddLambda([this]() -> void {
+		ABLOG(Warning, TEXT("OnHPIsZero"));
+		AnimInstance->SetDeadAnim();
+		SetActorEnableCollision(false);
+		});
+
+	// < UE 4.21
+	//auto CharacterWidget = Cast<UABCharacterWidget>(HPBarWidget->GetUserWidgetObject());
+	//if (CharacterWidget != nullptr)
+	//{
+	//	CharacterWidget->BindCharacterStat(CharacterStat);
+	//}
 }
 
 void AABCharacter::SetWeapon_Implementation(AABWeapon* NewWeapon)
 {
-	ensure(NewWeapon != nullptr && CurrentWeapon == nullptr);
+	ABCHECK(NewWeapon != nullptr && CurrentWeapon == nullptr);
 
 	FName WeaponSocket(TEXT("hand_rSocket"));
 	if (NewWeapon != nullptr)
@@ -196,7 +225,7 @@ void AABCharacter::OnAttackHitCheck()
 			ABLOG(Warning, TEXT("Multi Hit Actor Name: %s"), *SingleResult.Actor->GetName());
 		
 			FDamageEvent DamageEvent;
-			SingleResult.Actor->TakeDamage(50.0f, DamageEvent, GetController(), this);
+			SingleResult.Actor->TakeDamage(CharacterStat->GetAttack(), DamageEvent, GetController(), this);
 		}
 	}
 

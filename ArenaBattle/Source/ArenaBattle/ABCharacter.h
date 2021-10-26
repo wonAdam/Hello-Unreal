@@ -7,6 +7,8 @@
 #include "ABCharacter.generated.h"
 
 class UABAnimInstance;
+class UABCharacterStatComponent;
+class UWidgetComponent;
 
 UENUM()
 enum class EControlMode : uint8
@@ -88,6 +90,12 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = Components)
 	UCameraComponent* Camera;
+
+	UPROPERTY(VisibleAnywhere, Category = Stat)
+	UABCharacterStatComponent* CharacterStat;
+
+	UPROPERTY(VisibleAnywhere, Category = UI)
+	UWidgetComponent* HPBarWidget;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Weapon)
 	class AABWeapon* CurrentWeapon;

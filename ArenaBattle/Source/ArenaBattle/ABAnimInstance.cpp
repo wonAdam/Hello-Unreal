@@ -10,14 +10,14 @@ UABAnimInstance::UABAnimInstance()
 
 void UABAnimInstance::PlayAttackMontage()
 {
-	ensure(!IsDead);
+	ABCHECK(!IsDead);
 
 	Montage_Play(AttackMontage);
 }
 
 void UABAnimInstance::JumpToAttackMontageSection(int32 NewSection)
 {
-	ensure(!IsDead);
+	ABCHECK(!IsDead);
 
 	if (Montage_IsPlaying(AttackMontage))
 	{
@@ -37,7 +37,7 @@ void UABAnimInstance::AnimNotify_NextAttackCheck()
 
 FName UABAnimInstance::GetAttackMontageSectionName(int32 Section)
 {
-	ensure(FMath::IsWithinInclusive<int32>(Section, 1, 4));
+	ABCHECK(FMath::IsWithinInclusive<int32>(Section, 1, 4), NAME_None);
 	return FName(*FString::Printf(TEXT("Attack%d"), Section));
 }
 

@@ -55,7 +55,7 @@ void AABItemBox::OnCharacterOverlap(UPrimitiveComponent* OverlappedComp,
 	ABLOG_S(Warning);
 
 	auto ABCharacter = Cast<AABCharacter>(OtherActor);
-	ensure(OtherActor != nullptr);
+	ABCHECK(OtherActor != nullptr);
 
 	if (ABCharacter != nullptr && WeaponItemClass != nullptr)
 	{
