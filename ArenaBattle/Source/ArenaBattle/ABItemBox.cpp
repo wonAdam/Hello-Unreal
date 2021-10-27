@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "ABCharacter.h"
 #include "ABItemBox.h"
+#include "ABCharacter.h"
 
 // Sets default values
 AABItemBox::AABItemBox()

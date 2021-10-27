@@ -8,6 +8,7 @@
 #include "DrawDebugHelpers.h"
 #include "Components/WidgetComponent.h"
 #include "ABCharacterWidget.h"
+#include "ABAIController.h"
 
 // Sets default values
 AABCharacter::AABCharacter()
@@ -41,6 +42,9 @@ AABCharacter::AABCharacter()
 
 	AttackRange = 200.0f;
 	AttackRadius = 50.0f;
+
+	AIControllerClass = AABAIController::StaticClass();
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 
 float AABCharacter::TakeDamage(float DamageAmount,
