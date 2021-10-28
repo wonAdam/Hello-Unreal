@@ -12,14 +12,14 @@ AABAIController::AABAIController()
 
 void AABAIController::OnPossess(APawn* InPawn)
 {
-	Super::Possess(InPawn);
+	Super::OnPossess(InPawn);
 	GetWorld()->GetTimerManager().SetTimer(
 		RepeatTimerHandle, this, &AABAIController::OnRepeatTimer, RepeatInterval, true);
 }
 
 void AABAIController::OnUnPossess()
 {
-	Super::UnPossess();
+	Super::OnUnPossess();
 	GetWorld()->GetTimerManager().ClearTimer(RepeatTimerHandle);
 }
 
