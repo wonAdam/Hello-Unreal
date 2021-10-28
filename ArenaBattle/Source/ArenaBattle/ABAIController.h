@@ -6,6 +6,9 @@
 #include "AIController.h"
 #include "ABAIController.generated.h"
 
+class UBehaviorTree;
+class UBlackboardData;
+
 /**
  * 
  */
@@ -19,12 +22,11 @@ public:
 
 	virtual void OnPossess(APawn* InPawn) override;
 
-	virtual void OnUnPossess() override;
-
 private:
-	void OnRepeatTimer();
+	UPROPERTY(EditAnywhere)
+	UBehaviorTree* BTAsset;
 
-	FTimerHandle RepeatTimerHandle;
+	UPROPERTY(EditAnywhere)
+	UBlackboardData* BBAsset;
 
-	float RepeatInterval;
 };
