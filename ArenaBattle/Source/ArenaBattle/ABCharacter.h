@@ -15,6 +15,7 @@ enum class EControlMode : uint8
 {
 	GTA,
 	DIABLO,
+	NPC,
 };
 
 UCLASS()
@@ -71,6 +72,8 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void PostInitializeComponents() override;
+
+	virtual void PossessedBy(AController* NewController) override;
 
 public:	
 	// Called every frame

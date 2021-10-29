@@ -22,6 +22,10 @@ public:
 
 	virtual void OnPossess(APawn* InPawn) override;
 
+	static const FName SpawnPosKey;
+	static const FName PatrolPosKey;
+	static const FName TargetKey;
+
 private:
 	UPROPERTY(EditAnywhere)
 	UBehaviorTree* BTAsset;
