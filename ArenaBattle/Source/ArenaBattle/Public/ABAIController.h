@@ -22,6 +22,8 @@ public:
 
 	virtual void OnPossess(APawn* InPawn) override;
 
+	virtual void BeginPlay() override;
+
 	static const FName SpawnPosKey;
 	static const FName PatrolPosKey;
 	static const FName TargetKey;

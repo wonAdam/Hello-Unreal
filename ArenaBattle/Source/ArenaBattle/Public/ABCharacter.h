@@ -76,6 +76,9 @@ protected:
 
 	virtual void PossessedBy(AController* NewController) override;
 
+private:
+	void OnAssetLoadCompleted();
+
 public:	
 	bool TryAttack();
 	FOnAttackEndDelegate OnAttackEnd;
@@ -91,6 +94,9 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool CanSetWeapon();
+
+	FSoftObjectPath CharacterAssetToLoad = FSoftObjectPath(nullptr);
+	TSharedPtr<struct FStreamableHandle> AssetStreamingHandle;
 
 	UPROPERTY(VisibleAnywhere, Category = Components)
 	USpringArmComponent* SpringArm;
