@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "ABCharacter.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnAttackEndDelegate);
+
 class UABAnimInstance;
 class UABCharacterStatComponent;
 class UWidgetComponent;
@@ -64,7 +66,6 @@ protected:
 	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
 
 	void OnNextAttackCheck();
-	bool TryAttack();
 	void OnAttackHitCheck();
 
 protected:
@@ -76,6 +77,9 @@ protected:
 	virtual void PossessedBy(AController* NewController) override;
 
 public:	
+	bool TryAttack();
+	FOnAttackEndDelegate OnAttackEnd;
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

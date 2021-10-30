@@ -394,6 +394,8 @@ void AABCharacter::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted
 	IsAttacking = false;
 	CurrentCombo = 0;
 	CanNextCombo = false;
+
+	OnAttackEnd.Broadcast();
 }
 
 
