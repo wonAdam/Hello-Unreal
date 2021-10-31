@@ -13,7 +13,7 @@ AABSection::AABSection()
 	PrimaryActorTick.bCanEverTick = true;
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
-	Mesh->SetupAttachment(RootComponent);
+	RootComponent = Mesh;
 
 	Gate00 = CreateDefaultSubobject<UABSectionGate>(TEXT("Gate 0"));
 	Gate00->SetupAttachment(RootComponent);
@@ -38,46 +38,44 @@ AABSection::AABSection()
 	bNoBattle = false;
 }
 
-void AABSection::SetState(ESectionState NewState)
+void AABSection::SetState(ESectionState NewState, bool bImmediate)
 {
 	switch (NewState)
 	{
 	case ESectionState::READY:
 	{
-		OperateGates(true);
+		OperateGates(true, bImmediate);
 		break;
 	}
 	case ESectionState::BATTLE:
 	{
-		OperateGates(false);
+		OperateGates(false, bImmediate);
 		break;
 	}
 	case ESectionState::COMPLETE:
 	{
-		OperateGates(true);
+		OperateGates(true, bImmediate);
 		break;
 	}
-
-
 	}
 }
 
-void AABSection::SetGatesLocationToSockets()
+void AABSection::OperateGates(bool bOpen, bool bImmediate)
 {
-	//static FName SocketNames[] = { TEXT("Gate0"), TEXT("Gate1"), TEXT("Gate2"), TEXT("Gate3") };
-	//Gate00->SetupAttachment(Mesh, SocketNames[0]);
-	//Gate00->SetRelativeLocation(FVector(0.0f, -80.5f, 0.0f));
-	//Gate01->SetupAttachment(Mesh, SocketNames[1]);
-	//Gate01->SetRelativeLocation(FVector(0.0f, -80.5f, 0.0f));
-	//Gate02->SetupAttachment(Mesh, SocketNames[2]);
-	//Gate02->SetRelativeLocation(FVector(0.0f, -80.5f, 0.0f));
-	//Gate03->SetupAttachment(Mesh, SocketNames[3]);
-	//Gate03->SetRelativeLocation(FVector(0.0f, -80.5f, 0.0f));
-}
-
-void AABSection::OperateGates(bool bOpen)
-{
-	/*GateMesh00->SetRelativeRotation(bOpen ? FRotator(0.0f, -90.0f, 0.0f) : FRotator::Zer)*/
+	if (bOpen)
+	{
+		Gate00->Open(bImmediate);
+		Gate01->Open(bImmediate);
+		Gate02->Open(bImmediate);
+		Gate03->Open(bImmediate);
+	}
+	else
+	{
+		Gate00->Close(bImmediate);
+		Gate01->Close(bImmediate);
+		Gate02->Close(bImmediate);
+		Gate03->Close(bImmediate);
+	}
 }
 
 void AABSection::OnCenterTriggerBeginOverlap(

@@ -8,23 +8,26 @@
 
 class UABSectionGate;
 
+UENUM()
+enum class ESectionState : uint8
+{
+	READY = 0,
+	BATTLE,
+	COMPLETE
+};
+
 UCLASS()
 class ARENABATTLE_API AABSection : public AActor
 {
 	GENERATED_BODY()
 
 private:
-	enum class ESectionState : uint8
-	{
-		READY = 0,
-		BATTLE,
-		COMPLETE
-	};
+	void SetState(ESectionState NewState, bool bImmediate = false);
 
-	void SetState(ESectionState NewState);
+	UPROPERTY(VisibleAnywhere)
 	ESectionState CurrentState = ESectionState::READY;
 
-	void OperateGates(bool bOpen = true);
+	void OperateGates(bool bOpen = true, bool bImmediate = false);
 
 	UFUNCTION()
 	void OnCenterTriggerBeginOverlap(
@@ -53,10 +56,6 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	// 블루프린트 생성자에서 호출하세요.
-	UFUNCTION(BlueprintCallable)
-	virtual void SetGatesLocationToSockets();
 
 public:	
 	// Called every frame
