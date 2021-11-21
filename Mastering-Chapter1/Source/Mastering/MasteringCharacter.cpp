@@ -81,12 +81,19 @@ AMasteringCharacter::AMasteringCharacter()
 
 	// Uncomment the following line to turn motion controllers on by default:
 	//bUsingMotionControllers = true;
+
+	Inventory = CreateDefaultSubobject<UMasteringInventory>(TEXT("Inventory"));
 }
 
 void AMasteringCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
+
+	if (Inventory != nullptr)
+	{
+		Inventory->SelectBestWeapon(this);
+	}
 
 	//Attach gun mesh component to Skeleton, doing it here because the skeleton is not yet created in the constructor
 	FP_Gun->AttachToComponent(Mesh1P, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
@@ -139,6 +146,12 @@ void AMasteringCharacter::SetupPlayerInputComponent(class UInputComponent* Playe
 
 void AMasteringCharacter::OnFire()
 {
+	if (GetEquippedWeapon() != nullptr)
+	{
+		UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
+		GetEquippedWeapon()->Fire(GetControlRotation(), AnimInstance);
+	}
+
 	// try and fire a projectile
 	if (ProjectileClass != NULL)
 	{
@@ -296,4 +309,33 @@ bool AMasteringCharacter::EnableTouchscreenMovement(class UInputComponent* Playe
 	}
 	
 	return false;
+}
+
+void AMasteringCharacter::EquipWeapon(TSubclassOf<AMasteringWeapon> Weapon)
+{
+	if (EquippedWeaponActor != nullptr)
+	{
+		GetWorld()->DestroyActor(EquippedWeaponActor);
+	}
+
+	const FRotator SpawnRotation = GetActorRotation();
+	const FVector SpawnLocation = GetActorLocation();
+	FActorSpawnParameters ActorSpawnParams;
+	ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	ActorSpawnParams.Owner = this;
+
+	EquippedWeaponActor = Cast<AMasteringWeapon>(GetWorld()->SpawnActor(Weapon, &SpawnLocation, &SpawnRotation, ActorSpawnParams));
+
+	if (EquippedWeaponActor != nullptr)
+	{
+		EquippedWeaponActor->AttachToComponent(
+			Mesh1P, 
+			FAttachmentTransformRules(
+				EAttachmentRule::SnapToTarget, 
+				true
+			), 
+			TEXT("GripPoint")
+		);
+	}
+
 }

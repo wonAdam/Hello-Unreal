@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "MasteringInventory.h"
+#include "MasteringWeapon.h"
 #include "MasteringCharacter.generated.h"
 
 class UInputComponent;
@@ -133,10 +135,19 @@ protected:
 	bool EnableTouchscreenMovement(UInputComponent* InputComponent);
 
 public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+	UMasteringInventory* Inventory;
+
+	UPROPERTY()
+	AMasteringWeapon* EquippedWeaponActor;
+
 	/** Returns Mesh1P subobject **/
 	FORCEINLINE class USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 	/** Returns FirstPersonCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+	void EquipWeapon(TSubclassOf<AMasteringWeapon> Weapon);
+
+	FORCEINLINE AMasteringWeapon* GetEquippedWeapon() const { return EquippedWeaponActor; }
 };
 
